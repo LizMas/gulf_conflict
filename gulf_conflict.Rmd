@@ -1,0 +1,59 @@
+---
+title: "gulf_conflict"
+author: "Liz Masten"
+date: "12/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(readr)
+library(tidyverse)
+```
+
+```{r}
+
+data <- read_csv("ged201_update.csv")
+
+```
+
+```{r}
+
+x <- data %>% 
+     filter(region == "Middle East") %>% 
+     select(-active_year, -code_status, -number_of_sources, -source_article, -source_office, -source_date, -source_headline, -source_original, -event_clarity) %>% 
+  filter(country != "Egypt") %>% 
+  filter(country != "Turkey")
+
+```
+
+```{r}
+
+# side_a is the aggressor OR government entity 
+
+# side_b is rebel mvmt, rival government, or civilians 
+
+xx <- x %>% 
+      select(dyad_name) %>% 
+      unique()
+
+# remove dyads in which there are no proxy or alligned groups involved (Gov + Civilians; Gov + Gov; IS; PKK)
+
+remove <- x %>% 
+          filter(!dyad_name %in% c("Government of Bahrain - Civilians",
+                                   "Government of Iran - Civilians",
+                                   "Government of Iraq - Government of Kuwait",
+                                   "Government of Australia, Government of United Kingdom, Government of United States of America - Government of Iraq",
+                                   "Government of Iraq - Civilians",
+                                   "Government of Israel - Civilians",
+                                   "	Government of Syria - Civilians",
+                                   "Government of Russia (Soviet Union) - Chechen Republic of Ichkeria",
+                                   "Government of Yemen (North Yemen) - Civilians",
+                                   "Government of Yemen (North Yemen) - Democratic Republic of Yemen")) #?
+
+
+
+```
+
+
