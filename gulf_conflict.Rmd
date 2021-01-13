@@ -95,6 +95,14 @@ rem_eq <- rem_gov %>%
                                    "Alawite (Lebanon) - Sunni (Lebanon)",
                                    "ADP - Civilians", #part of Lebanese gov, aligned w Hezbollah, not funded by it probably 
                                    "IS - Jabhat Fateh al-Sham", #Al-Qaeda/ Al-Nusra Front
+                                   "Government of Lebanon - IS",
+                                   "IS - HTS, Saraya Ahl al-Sham", #Hez. mediated conflict
+                                   "Government of United States of America - al-Qaida",
+                                   "al-Qaida  - Civilians",
+                                   "Government of Russia (Soviet Union) - Forces of the Caucasus Emirate",
+                                   "Opponents of al-Assad - Supporters of al-Assad", #vague
+                                   "al-Tawhid Brigade - PYD", #eventual part of Islamic Front, informally supported by Saudi citizens with lax financial regulations from Saudi state. 
+                                   "IS - PYD",
                                    ""
           ))
 
