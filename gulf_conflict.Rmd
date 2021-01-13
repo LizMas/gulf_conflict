@@ -38,20 +38,65 @@ xx <- x %>%
       select(dyad_name) %>% 
       unique()
 
-# remove dyads in which there are no proxy or alligned groups involved (Gov + Civilians; Gov + Gov; IS; PKK)
+# remove dyads in which there are no proxy or alligned groups involved (Gov + Civilians; Gov + Gov) out of 187 entries. 
 
-remove <- x %>% 
+rem_gov <- x %>% 
           filter(!dyad_name %in% c("Government of Bahrain - Civilians",
                                    "Government of Iran - Civilians",
                                    "Government of Iraq - Government of Kuwait",
                                    "Government of Australia, Government of United Kingdom, Government of United States of America - Government of Iraq",
                                    "Government of Iraq - Civilians",
                                    "Government of Israel - Civilians",
-                                   "	Government of Syria - Civilians",
+                                   "Government of Syria - Civilians",
                                    "Government of Russia (Soviet Union) - Chechen Republic of Ichkeria",
                                    "Government of Yemen (North Yemen) - Civilians",
                                    "Government of Yemen (North Yemen) - Democratic Republic of Yemen")) #?
 
+```
+
+```{r}
+
+# remove conflicts unrelated to Iranian/ Iraqi equties out of 177 unique entries. 
+
+rem_eq <- rem_gov %>% 
+          filter(!dyad_name %in% c("Government of Iran - KDPI", #Iranian Kurds
+                                   "Government of Iraq - PUK", #Kurds... KSA generally supports Kurds esp in Iraq to counter Iranian proxies, but no evidence that they do this with Iranian Kurds. 
+                                   "Government of Iran - PJAK", #Kurds 
+                                   "Government of Turkey - PKK", 
+                                   "Government of Iran - IS", #who knows
+                                   "Government of Iraq - Ansar al-Islam", #KSA supported terrorist designation
+                                   "Government of Iraq - IS", 
+                                   "Government of Iraq - RJF", #split with AQI, no evidence of KSA collab
+                                   "Government of Iraq - KDP", #rumors imo
+                                   "Ansar al-Islam - Civilians",
+                                   "IS - Civilians",
+                                   "PKK - Civilians",
+                                   "Jamaat Jund al-Sahaba - Civilians",
+                                   "1920 Revolution Brigades - IS", # Iraqi nationalist
+                                   "Ansar al-Islam - PUK", 
+                                   "IS - RJF",
+                                   "Dereiat - al-Shaman", #unclear who these are
+                                   "IMK - PUK",
+                                   "KDP - PUK",
+                                   "KDP - PKK",
+                                   "PKK - PUK",
+                                   "Government of Syria - Syrian insurgents", #too vague
+                                   "Government of Turkey - IS",
+                                   "Government of Israel - PFLP", #Palestinian cause, not regional influence; also secular Marxist
+                                   "Government of Israel - PFLP-GC",
+                                   "Government of Israel - Fatah",
+                                   "Government of Israel - AMB", #not enough info
+                                   "AMB - Civilians",
+                                   "IS - Southern Front",
+                                   "Government of Jordan - IS",
+                                   "Government of Lebanon - Lebanese Forces", #vague 
+                                   "Government of Syria - Civilians",
+                                   "Fatah - Fatah Revolutionary Council",
+                                   "Alawite (Lebanon) - Sunni (Lebanon)",
+                                   "ADP - Civilians", #part of Lebanese gov, aligned w Hezbollah, not funded by it probably 
+                                   "IS - Jabhat Fateh al-Sham", #Al-Qaeda/ Al-Nusra Front
+                                   ""
+          ))
 
 
 ```
