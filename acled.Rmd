@@ -173,3 +173,14 @@ rec <- ax %>%
 
 ```
 
+```{r}
+
+gis_data <- rec %>% 
+      filter(country %in% c("Yemen", "Iraq", "Lebanon", "Israel", "Palestine")) %>% 
+      filter(recode_actor1 %in% c("KSA", "KSA_itself", "KSA_conv", "Iran", "Iran_itself", "Iran_conv")) %>% 
+      select(-actor1, -assoc_actor_1, -notes)
+
+write.csv(gis_data, "gis_data.csv", row.names = FALSE)
+
+```
+
