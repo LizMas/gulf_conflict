@@ -1,0 +1,175 @@
+---
+title: "acled"
+author: "Liz Masten"
+date: "1/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(readr)
+library(forcats)
+library(tidyverse)
+
+```
+
+```{r}
+
+acled <- read_csv("acled.csv")
+
+```
+
+```{r}
+
+# for GIS institute, just focus on Yemen, Iraq, and Lebanon
+
+ax <- acled %>% 
+      select(-time_precision, -inter1, -interaction, -region, -source, -source_scale) %>% 
+      filter(fatalities >= 1) %>% 
+      filter(country %in% c("Yemen", "Iraq", "Lebanon", "Syria", "Israel", "Palestine"))
+
+as.data.frame(ax)
+
+g <- ax %>% filter(country == "Palestine") %>% select(actor1) %>% unique() %>% view()
+
+o <- ax  %>% select(actor1) %>% unique() %>% view()
+
+      
+```
+
+```{r}
+
+# _conv is support for conventional armies; 
+# _itself is direct action; 
+# else, militias
+
+ax$actor1 <- as.factor(ax$actor1)
+
+rec <- ax %>% 
+  mutate(recode_actor1 = fct_recode(actor1,
+                                    
+################################## YEMEN ################################################# 
+
+                  "Iran" = "Military Forces of Yemen (2016-) Supreme Political Council", #Houthis, still militia 
+                  "KSA_conv" = "Military Forces of Yemen (2012-)",
+                  "KSA_itself" = "Operation Restoring Hope",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Security Belt Forces",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Hadhrami Elite Forces",
+                  "KSA" = "Hujur Tribal Militia (Yemen)",
+                  "Iran" = "Military Forces of Yemen (2015-2016) Supreme Revolutionary Committee", #interim Houthi gov
+                  "KSA" = "National Resistance Forces",
+                  "KSA" = "Popular Resistance",
+                  "KSA" = "Southern Resistance", 
+                  "KSA_itself" = "Operation Decisive Storm",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Security Belt Forces",
+                  "KSA" = "Militia (Abu al Abbas)", 
+                  "KSA_conv" = "Military Forces of Yemen (2012-) 35th Armored Brigade",
+                  "KSA_conv" = "Police Forces of Yemen (2012-)",
+                  "KSA" = "Bilharith Tribal Militia (Yemen)",
+                  "Iran" = "Houthi Movement - Ansar Allah", 
+                  "KSA" = "Militia (Pro-Government)",
+                  "KSA" = "Al Humayqani Tribal Militia (Yemen)",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Shabwani Elite Forces",
+                  "KSA_conv" = "Military Forces of Yemen (2016-) Republican Guard",
+                  "Iran" = "Subaihi Tribal Militia (Yemen)",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Presidential Guard",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Border Guard",
+                  "KSA_conv" = "Police Forces of Yemen (2015-2016) Special Security Forces",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) 17th Infantry Brigade",
+                  "KSA" = "Al Islah Party",
+                  "KSA" = "Giants Brigade",
+                  "KSA" = "Tihama Resistance",
+                  "KSA_conv" = "Police Forces of Yemen (2016-) Supreme Political Council",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) 22nd Armored Brigade",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) 30th Armored Brigade",
+                  "KSA" = "Militia (Hamoud Saeed al Mikhlafi)",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) 170th Air Defence Brigade",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Saiqa Brigades",
+                  #was UAE backed before withdrawal 
+                  "KSA" = "Southern Movement",
+                  "KSA_conv" = "Military Forces of Yemen (2015-2016) Republican Guard", 
+                  #aligned with Hajouri against Houthis as of Mar 2019
+                  "KSA" = "Murad Tribal Militia (Yemen)",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Political Security Organisation", 
+                  #Saudi-backed, Salafi, likely AQAP affiliated 
+                  "KSA" = "Militia (Al Mihdhar)",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Coast Guard",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Support and Reinforcement Brigades",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) 4th Brigade",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Counter-Terrorism Unit",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Republican Guard",
+                  "KSA_conv" = "Police Forces of Yemen (2015-2016) Prison Guards",
+                  "KSA_conv" = "Military Forces of Yemen (2012-) Tihami Elite Forces",
+                  "KSA_conv" = "Police Forces of Yemen (2016-) Prison Guards",
+                  "KSA_conv" = "Police Forces of Yemen (2016-) Special Security Forces",
+                  "KSA" = "STC: Southern Transitional Council (Security Belt Forces)",
+                  "KSA" = "STC: Southern Transitional Council (Saiqa Brigades)",
+                  "KSA" = "STC: Southern Transitional Council (Aden Security)",
+                  "KSA" = "Guardians of the Republic",
+                  
+###################### IRAQ ###################################################################
+
+## KSA does not *generally* support direct proxy or military action in Iraq, focusing instead on financial support projects. 
+                  
+                  "Iran" = "TMF: Tribal Mobilization Forces", #from what I can tell, part of PMF 
+                  "Iran_conv" = "Military Forces of Iraq (2020-) Popular Mobilization Forces", 
+                  "Iran" = "Peace Companies", #al-Mahdi Army 
+                  "Iran_itself" = "Military Forces of Iran (1989-) Islamic Revolutionary Guard Corps", 
+                  "Iran" = "Sadrist Movement", 
+                  "Iran" = "Ashab al Kahf", 
+                  "Iran_conv" = "Military Forces of Iraq (2018-2020) Popular Mobilization Forces", 
+                  "Iran" = "Kataib Hezbollah (Iraq)", 
+                  "Iran_itself" = "Military Forces of Iran (1989-)", 
+                  "Iran" = "Turkmen Brigades",
+                  "Iran_conv" = "Military Forces of Iraq (2018-) Popular Mobilization Forces", 
+                  "Iran" = "Al Baaj Communal Militia (Iraq)",
+                  "Iran" = "Qurna Communal Militia (Iraq)",
+                  "Iran" = "Shiite Muslim Militia (Iraq)",
+                  "Iran" = "Kataib Hizbullah",
+                  "Iran" = "Unidentified Armed Group (Iran)",
+                  "KSA" = "Al Ahrar Battalions", #aka Ahrar al-sham 
+                  "Iran_itself" = "Military Forces of Iran (1989-) Basij Force",
+                  "Iran" = "North Tikrit Communal Militia (Iraq)",
+                  "Iran" = "Military Forces of Iraq (2020-) Peshmerga", #still a Militia
+
+                  
+######################## LEBANON ################################################                  
+                  
+                  "Iran" = "Hezbollah",
+                  "KSA" = "Fatah al Islam", 
+                  "Iran" = "Ansar Allah",
+                  "KSA" = "AAS: Ahrar al Sham",
+
+######################## ISRAEL (but really Palestine) ##################################################
+
+                  "Iran" = "PIJ: Palestinian Islamic Jihad",
+                  "Iran" = "Hamas Movement",
+                  
+###################### PALESTINE ################################################
+
+                  "Iran" = "PFLP: Popular Front for the Liberation of Palestine",
+                  "Iran" = "Al Aqsa Martyrs Brigade",
+                  
+######################### SYRIA #################################################     
+
+                  "Iran" = "QDW: National Defense Forces",
+                  "Iran" = "LaQ: Quds Brigade",
+                  "Iran_conv" = "Military Forces of Iraq (2020-) Popular Mobilization Forces",
+                  "Iran_conv" = "Military Forces of Syria (2000-) 25th Armored Division",
+                  "Iran_conv" = "Military Forces of Syria (2000-) 5th Assault Corps",
+                  "Iran_conv" = "Military Forces of Syria (2000-) 4th Armored Division",
+                  "Iran_conv" = "Military Forces of Iran (1989-) Islamic Revolutionary Guard Corps",
+                  "Iran_conv" = "Military Forces of Syria (2000-) Military Intelligence",
+                  "Iran_conv" = "Military Forces of Syria (2000-) Syrian Arab Air Force",
+                  "Iran_conv" = "Military Forces of Syria (2000-) 9th Armored Division",
+                  "Iran_conv" = "Military Forces of Syria (2000-) Syrian Republican Guard",
+                  "Iran_conv" = "Police Forces of Syria (2000-) State Security",
+                  "Iran" = "Zainabiyoun Brigade",
+                  "Iran_conv" = "Military Forces of Syria (2000-) Air Force Intelligence Directorate", 
+                  
+                  )) 
+
+
+```
+
